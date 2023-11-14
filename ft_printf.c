@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:24:34 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 11:47:48 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:35:50 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,34 +86,103 @@ void	ft_unsigned_pf(unsigned int n, int *count)
 		ft_putchar_pf(n + 48, count);
 	}
 }
-/*{
-	char			*array;
-	size_t			len;
-	unsigned int	nb;
 
-	nb = n;
-	len = 1;
-	while (nb >= 10)
-	{
-		nb = nb / 10;
-		len++;
-	}
-	array = ft_calloc((len + 1), sizeof(char));
-	if (array == NULL)
-		return ;
-	while (len > 0)
-	{
-		array[len - 1] = n % 10 + '0';
-		n = n / 10;
-		len--;
-	}
-	ft_putstr_pf(array, count);
-	free (array);
-}*/
-
-ft_hex_lower(unsigned int number, int *count)
+static unsigned int	ft_pow_pf(int pow)
 {
-	
+	if (pow == 0)
+		return (1);
+	return (ft_pow_pf(pow - 1) * 16);
+}
+
+static int	ft_len_pf(unsigned int num)
+{
+	int	len;
+
+	if (num == 0)
+		return (1);
+	len = 0;
+	while (num)
+	{
+		len++;
+		num = num / 16;
+	}
+	return (len);
+}
+
+void	ft_hex(unsigned int num, int *count, char c)
+{
+	int				len;
+	unsigned int	pow;
+
+	len = ft_len_pf(num);
+	pow = ft_pow_pf(len - 1);
+	while (pow >= 1)
+	{
+		if (num / pow > 9)
+		{
+			if (c == 'x')
+				ft_putchar_pf(((num / pow) - 10) + 'a', count);
+			else
+				ft_putchar_pf(((num / pow) - 10) + 'A', count);
+		}
+		else
+			ft_putchar_pf((num / pow) + '0', count);
+		num = num % pow;
+		pow = pow / 16;
+	}
+}
+
+static unsigned long int	ft_ppow_pf(int pow)
+{
+	if (pow == 0)
+		return (1);
+	return (ft_ppow_pf(pow - 1) * 16);
+}
+
+static int	ft_plen_pf(unsigned long int num)
+{
+	int	len;
+
+	if (num == 0)
+		return (1);
+	len = 0;
+	while (num)
+	{
+		len++;
+		num = num / 16;
+	}
+	return (len);
+}
+
+static void	ft_phex(unsigned long int num, int *count)
+{
+	int					len;
+	unsigned long int	pow;
+
+	len = ft_plen_pf(num);
+	pow = ft_ppow_pf(len - 1);
+	while (pow > 0)
+	{
+		if (num / pow > 9)
+		{
+			ft_putchar_pf(((num / pow) - 10) + 'a', count);
+		}
+		else
+			ft_putchar_pf((num / pow) + '0', count);
+		num = num % pow;
+		pow = pow / 16;
+	}
+}
+
+void ft_pointer_pf(unsigned long int p, int *count)
+{
+	if (p == 0)
+	{
+		ft_putstr_pf("0x0", count);
+		return ;
+	}
+	ft_putstr_pf("0x", count);
+	ft_phex(p, count);
 }
 
 void	determine_format(va_list args, char *str, int *count)
@@ -128,8 +197,10 @@ void	determine_format(va_list args, char *str, int *count)
 		ft_putnbr_pf(va_arg(args, int), count);
 	else if (*str == 'u')
 		ft_unsigned_pf(va_arg(args, unsigned int), count);
-	else if (*str == 'x')
-		ft_hex_lower(va_arg(args, unsigned int), count);
+	else if (*str == 'p')
+		ft_pointer_pf(((unsigned long int)va_arg(args, void *)), count);
+	else if (*str == 'x' || *str == 'X')
+		ft_hex(va_arg(args, unsigned int), count, *str);
 }
 
 int	ft_printf(const char *str, ...)
@@ -172,8 +243,13 @@ int	ft_printf(const char *str, ...)
 	//n = printf("%s", (char *)NULL);
 	//printf("actual count is: %d\n", n);
 
-	ours = ft_printf("Testing for '123' %u\n", 123);
-	printf("count is %d\n", ours);
-	n = printf("Testing for '123' %u\n", 123);
-	printf("actual count is: %d\n", n);
+	//ours = ft_printf("Testing for '123' %u\n", 123);
+	//printf("count is %d\n", ours);
+	//n = printf("Testing for '123' %u\n", 123);
+	//printf("actual count is: %d\n", n);
+
+	//ours = ft_printf("Testing for '' %p\n %p\n", LONG_MIN, LONG_MAX);
+	//printf("ft_printf count is %d\n", ours);
+	n = printf("Testing for '' %p\n %p\n", LONG_MIN, LONG_MAX);
+	printf("printf count is: %d\n", n);
 }*/
