@@ -6,19 +6,9 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:24:34 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 17:22:23 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:45:20 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*Program name libftprintf.a
-Turn in files Makefile, *.h, * / *.h, *.c, * / *.c
-Makefile NAME, all, clean, fclean, re
-External functs. malloc, free, write,
-va_start, va_arg, va_copy, va_end
-Libft authorized Yes
-Description Write a library that contains ft_printf(), a
-function that will mimic the original printf()
-Flags: cspdiuxX%*/
 
 #include "ft_printf.h"
 
@@ -61,7 +51,7 @@ int	ft_printf(const char *str, ...)
 		}
 		else
 		{
-			if (ft_putchar_pf(*str, &count))
+			if (ft_putchar_pf(*str, &count) == -1)
 				return (count = -1);
 			str++;
 		}

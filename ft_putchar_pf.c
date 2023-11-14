@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:45:01 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 17:00:55 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:06:56 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,8 @@
 
 int	ft_putchar_pf(char c, int *count)
 {
-	int	buffer;
-
-	buffer = write(1, &c, 1);
-	if (buffer == -1)
-	{
-		*count = -1;
-		return (*count);
-	}
+	if (write(1, &c, 1) == -1)
+		return (*count = -1);
 	(*count)++;
 	return (0);
 }

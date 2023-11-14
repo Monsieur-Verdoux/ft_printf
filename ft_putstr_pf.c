@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:45:53 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 17:01:03 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:10:00 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	ft_putstr_pf(char *str, int *count)
 	while (*str)
 	{
 		if (ft_putchar_pf(*str, count) == -1)
-		{
-			*count = -1;
-			return (*count);
-		}
+			return (*count = -1);
 		str++;
 	}
 	return (0);

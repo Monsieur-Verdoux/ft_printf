@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:49:29 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 16:50:13 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:09:43 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ int	ft_hex_pf(unsigned int num, int *count, char c)
 					return (*count = -1);
 		}
 		else
-			if (ft_putchar_pf((num / pow) + '0', count))
+			if (ft_putchar_pf((num / pow) + '0', count) == -1)
 				return (*count = -1);
 		num = num % pow;
 		pow = pow / 16;
 	}
-	return (*count);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:46:23 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 17:00:59 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:08:54 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ int	ft_putnbr_pf(int n, int *count)
 		if (ft_putchar_pf(n + 48, count) == -1)
 			return (*count = -1);
 	}
-	return (*count);
+	return (0);
 }

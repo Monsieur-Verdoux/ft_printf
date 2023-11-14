@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:20 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 16:51:37 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:09:56 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ft_phex(unsigned long int num, int *count)
 		num = num % pow;
 		pow = pow / 16;
 	}
-	return (*count);
+	return (0);
 }
 
 int	ft_ptr_pf(unsigned long int p, int *count)
@@ -78,5 +78,5 @@ int	ft_ptr_pf(unsigned long int p, int *count)
 		}
 		ft_phex(p, count);
 	}
-	return (*count);
+	return (0);
 }
