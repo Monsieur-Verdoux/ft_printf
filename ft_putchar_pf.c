@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_putchar_pf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 12:46:22 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 17:00:34 by akovalev         ###   ########.fr       */
+/*   Created: 2023/11/14 16:45:01 by akovalev          #+#    #+#             */
+/*   Updated: 2023/11/14 17:00:55 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "ft_printf.h"
 
-# include <stdarg.h>
-# include <unistd.h>
+int	ft_putchar_pf(char c, int *count)
+{
+	int	buffer;
 
-int	ft_printf(const char *str, ...);
-int	ft_putchar_pf(char c, int *count);
-int	ft_putstr_pf(char *str, int *count);
-int	ft_putnbr_pf(int n, int *count);
-int	ft_unsigned_pf(unsigned int n, int *count);
-int	ft_hex_pf(unsigned int num, int *count, char c);
-int	ft_ptr_pf(unsigned long int p, int *count);
-
-#endif
+	buffer = write(1, &c, 1);
+	if (buffer == -1)
+	{
+		*count = -1;
+		return (*count);
+	}
+	(*count)++;
+	return (0);
+}
