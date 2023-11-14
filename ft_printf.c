@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:24:34 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 13:35:50 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/14 16:33:05 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	ft_putchar_pf(char c, int *count)
 
 	buffer = write(1, &c, 1);
 	if (buffer == -1)
-		return (-1);
+	{
+		*count = -1;
+		return (*count);
+	}
 	(*count)++;
 	return (0);
 }
@@ -39,52 +42,65 @@ int	ft_putstr_pf(char *str, int *count)
 {
 	if (str == NULL)
 	{
-		ft_putstr_pf("(null)", count);
-		return (-1);
+		if (ft_putstr_pf("(null)", count) == -1)
+			return (*count = -1);
+		return (*count);
 	}
 	while (*str)
 	{
-		ft_putchar_pf(*str, count);
+		if (ft_putchar_pf(*str, count) == -1)
+		{
+			*count = -1;
+			return (*count);
+		}
 		str++;
 	}
 	return (0);
 }
 
-void	ft_putnbr_pf(int n, int *count)
+int	ft_putnbr_pf(int n, int *count)
 {
 	if (n == -2147483648)
 	{
-		write(1, "-2147483648", 11);
+		if (write(1, "-2147483648", 11) == -1)
+			return (*count = -1);
 		*count = *count + 11;
-		return ;
+		return (*count);
 	}
 	if (n < 0)
 	{
-		ft_putchar_pf('-', count);
+		if (ft_putchar_pf('-', count) == -1)
+			return (*count = -1);
 		n = -n;
 	}
 	if (n > 9)
 	{
-		ft_putnbr_pf(n / 10, count);
+		if (ft_putnbr_pf(n / 10, count) == -1)
+			return (*count = -1);
 		n = n % 10;
 	}
 	if (n <= 9)
 	{
-		ft_putchar_pf(n + 48, count);
+		if (ft_putchar_pf(n + 48, count) == -1)
+			return (*count = -1);
 	}
+	return (*count);
 }
 
-void	ft_unsigned_pf(unsigned int n, int *count)
+int	ft_unsigned_pf(unsigned int n, int *count)
 {
 	if (n > 9)
 	{
-		ft_putnbr_pf(n / 10, count);
+		if (ft_putnbr_pf(n / 10, count) == -1)
+			return (*count = -1);
 		n = n % 10;
 	}
 	if (n <= 9)
 	{
-		ft_putchar_pf(n + 48, count);
+		if (ft_putchar_pf(n + 48, count) == -1)
+			return (*count = -1);
 	}
+	return (*count);
 }
 
 static unsigned int	ft_pow_pf(int pow)
@@ -109,7 +125,7 @@ static int	ft_len_pf(unsigned int num)
 	return (len);
 }
 
-void	ft_hex(unsigned int num, int *count, char c)
+int	ft_hex(unsigned int num, int *count, char c)
 {
 	int				len;
 	unsigned int	pow;
@@ -121,15 +137,21 @@ void	ft_hex(unsigned int num, int *count, char c)
 		if (num / pow > 9)
 		{
 			if (c == 'x')
-				ft_putchar_pf(((num / pow) - 10) + 'a', count);
+			{
+				if (ft_putchar_pf(((num / pow) - 10) + 'a', count) == -1)
+					return (*count = -1);
+			}
 			else
-				ft_putchar_pf(((num / pow) - 10) + 'A', count);
+				if (ft_putchar_pf(((num / pow) - 10) + 'A', count) == -1)
+					return (*count = -1);
 		}
 		else
-			ft_putchar_pf((num / pow) + '0', count);
+			if (ft_putchar_pf((num / pow) + '0', count))
+				return (*count = -1);
 		num = num % pow;
 		pow = pow / 16;
 	}
+	return (*count);
 }
 
 static unsigned long int	ft_ppow_pf(int pow)
@@ -154,7 +176,7 @@ static int	ft_plen_pf(unsigned long int num)
 	return (len);
 }
 
-static void	ft_phex(unsigned long int num, int *count)
+static int	ft_phex(unsigned long int num, int *count)
 {
 	int					len;
 	unsigned long int	pow;
@@ -165,42 +187,59 @@ static void	ft_phex(unsigned long int num, int *count)
 	{
 		if (num / pow > 9)
 		{
-			ft_putchar_pf(((num / pow) - 10) + 'a', count);
+			if (ft_putchar_pf(((num / pow) - 10) + 'a', count) == -1)
+				return (*count = -1);
 		}
 		else
-			ft_putchar_pf((num / pow) + '0', count);
+		{
+			if (ft_putchar_pf((num / pow) + '0', count) == -1)
+				return (*count = -1);
+		}
 		num = num % pow;
 		pow = pow / 16;
 	}
+	return (*count);
 }
 
-void ft_pointer_pf(unsigned long int p, int *count)
+int	ft_ptr_pf(unsigned long int p, int *count)
 {
 	if (p == 0)
 	{
-		ft_putstr_pf("0x0", count);
-		return ;
+		if (ft_putstr_pf("0x0", count) == -1)
+		{
+			*count = -1;
+			return (*count);
+		}
 	}
-	ft_putstr_pf("0x", count);
-	ft_phex(p, count);
+	else
+	{
+		if (ft_putstr_pf("0x", count) == -1)
+		{
+			*count = -1;
+			return (*count);
+		}
+		ft_phex(p, count);
+	}
+	return (*count);
 }
 
-void	determine_format(va_list args, char *str, int *count)
+static int	determine_format(va_list args, char *str, int *count)
 {
 	if (*str == 'c')
-		ft_putchar_pf(va_arg(args, int), count);
+		return (ft_putchar_pf(va_arg(args, int), count));
 	else if (*str == 's')
-		ft_putstr_pf(va_arg(args, char *), count);
+		return (ft_putstr_pf(va_arg(args, char *), count));
 	else if (*str == '%')
-		ft_putchar_pf('%', count);
+		return (ft_putchar_pf('%', count));
 	else if (*str == 'd' || *str == 'i')
-		ft_putnbr_pf(va_arg(args, int), count);
+		return (ft_putnbr_pf(va_arg(args, int), count));
 	else if (*str == 'u')
-		ft_unsigned_pf(va_arg(args, unsigned int), count);
+		return (ft_unsigned_pf(va_arg(args, unsigned int), count));
 	else if (*str == 'p')
-		ft_pointer_pf(((unsigned long int)va_arg(args, void *)), count);
+		return (ft_ptr_pf(((unsigned long int)va_arg(args, void *)), count));
 	else if (*str == 'x' || *str == 'X')
-		ft_hex(va_arg(args, unsigned int), count, *str);
+		return (ft_hex(va_arg(args, unsigned int), count, *str));
+	return (*count = -1);
 }
 
 int	ft_printf(const char *str, ...)
@@ -208,6 +247,8 @@ int	ft_printf(const char *str, ...)
 	int		count;
 	va_list	args;
 
+	if (!str)
+		return (-1);
 	va_start(args, str);
 	count = 0;
 	while (*str)
@@ -215,12 +256,14 @@ int	ft_printf(const char *str, ...)
 		if (*str == '%')
 		{
 			str++;
-			determine_format(args, (char *)str, &count);
+			if (determine_format(args, (char *)str, &count) == -1)
+				return (count = -1);
 			str++;
 		}
 		else
 		{
-			ft_putchar_pf(*str, &count);
+			if (ft_putchar_pf(*str, &count))
+				return (count = -1);
 			str++;
 		}
 	}
@@ -250,6 +293,11 @@ int	ft_printf(const char *str, ...)
 
 	//ours = ft_printf("Testing for '' %p\n %p\n", LONG_MIN, LONG_MAX);
 	//printf("ft_printf count is %d\n", ours);
-	n = printf("Testing for '' %p\n %p\n", LONG_MIN, LONG_MAX);
+	//n = printf("Testing for '' %p\n %p\n", LONG_MIN, LONG_MAX);
+	//printf("printf count is: %d\n", n);
+
+	ours = ft_printf("\001\002\007\v\010\f\r\n");
+	printf("ft_printf count is %d\n", ours);
+	n = printf("\001\002\007\v\010\f\r\n");
 	printf("printf count is: %d\n", n);
 }*/
