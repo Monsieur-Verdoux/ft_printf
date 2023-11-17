@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:24:34 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/14 18:45:20 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:45:06 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,24 @@ static int	ft_format_pf(va_list args, char *str, int *count)
 		return (ft_ptr_pf(((unsigned long int)va_arg(args, void *)), count));
 	else if (*str == 'x' || *str == 'X')
 		return (ft_hex_pf(va_arg(args, unsigned int), count, *str));
-	return (*count = -1);
+	return (-1);
+}
+
+int	ft_parse_string_pf(va_list args, char *str, int *count)
+{
+	while (*str)
+	{
+		if (*str == '%')
+		{
+			str++;
+			if (ft_format_pf(args, str, count) == -1)
+				return (-1);
+		}
+		else if (ft_putchar_pf(*str, count) == -1)
+			return (-1);
+		str++;
+	}
+	return (0);
 }
 
 int	ft_printf(const char *str, ...)
@@ -40,22 +57,8 @@ int	ft_printf(const char *str, ...)
 		return (-1);
 	va_start(args, str);
 	count = 0;
-	while (*str)
-	{
-		if (*str == '%')
-		{
-			str++;
-			if (ft_format_pf(args, (char *)str, &count) == -1)
-				return (count = -1);
-			str++;
-		}
-		else
-		{
-			if (ft_putchar_pf(*str, &count) == -1)
-				return (count = -1);
-			str++;
-		}
-	}
-	va_end (args);
+	if (ft_parse_string_pf(args, (char *)str, &count) == -1)
+		count = -1;
+	va_end(args);
 	return (count);
 }
