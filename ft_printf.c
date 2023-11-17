@@ -6,7 +6,7 @@
 /*   By: akovalev <akovalev@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 11:24:34 by akovalev          #+#    #+#             */
-/*   Updated: 2023/11/17 11:45:06 by akovalev         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:14:53 by akovalev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	ft_format_pf(va_list args, char *str, int *count)
 	return (-1);
 }
 
-int	ft_parse_string_pf(va_list args, char *str, int *count)
+static int	ft_parse_string_pf(va_list args, char *str, int *count)
 {
 	while (*str)
 	{
